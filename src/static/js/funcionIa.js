@@ -45,7 +45,7 @@ export async function peticionClarifai(requestOptions){
         let peticion = await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
         let result = await peticion.json()
         const regions = result.outputs[0].data.regions;
-
+        const resultados=[]
         regions.forEach(region => {
             // Accessing and rounding the bounding box values
             const boundingBox = region.region_info.bounding_box;
@@ -59,10 +59,12 @@ export async function peticionClarifai(requestOptions){
                 const name = concept.name;
                 const value = concept.value.toFixed(4);
 
-                console.log(`${name}: ${value} BBox: ${topRow}, ${leftCol}, ${bottomRow}, ${rightCol}`);
+                console.log(`${name}`);
+                resultados.push(name)
                 
             });
         });
+        return resultados
     } catch (error) {
         console.log(error)
     }
